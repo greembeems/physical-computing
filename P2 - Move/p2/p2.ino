@@ -51,22 +51,6 @@ void loop() {
   }
 
   // Turn motors certain number of degrees either determined by calculation or random
-//  if (degreesToTurn <= 140)
-//  {
-//    for (; degreesToTurn <= 150; degreesToTurn++)
-//    {
-//      servo.write(degreesToTurn);
-//      delay(15);
-//    }
-//  }
-//  else if (degreesToTurn >= 150)
-//  {
-//    for(; degreesToTurn >= 140; degreesToTurn--)
-//    {
-//      servo.write(degreesToTurn);
-//      delay(15);
-//    }
-//  }
   currentDegrees = currentDegrees + degreesToTurn;
   if (currentDegrees > 180)
   {
