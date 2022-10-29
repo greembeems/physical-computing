@@ -2,26 +2,23 @@
 // Project 2: Move
 // 10/27/2022
 
-#include <Servo.h>
-
-// On pin 2
-Servo servo;
+// Fan
+int fan = 3;
+int fanSpeed = 0;
 
 // Piezo vibration sensor
-int sensorValue = 0; // Determines rate of revolutions for motor
+int sensorValue = 0; // Determines rate of revolutions for fan (speed)
 
 // Time it takes for the program to assume no one is interacting
 unsigned long noInteract = 15000; 
 
-// Change in time
+// Delta time
 unsigned long pastTime = 0;
 
-// Degrees the motor will turn
-int degreesToTurn = 0;
-int currentDegrees = 0;
-
 void setup() {
-  servo.attach(2, 530, 2600);
+  pinMode(fan, OUTPUT);
+
+  // Random
   randomSeed(analogRead(0));
 }
 
@@ -35,8 +32,9 @@ void loop() {
   // If the sensor is displaying a value
   if (sensorValue > 0)
   {
-    // Calculate the number of revolutions taken this update
-    degreesToTurn = sensorValue * (int)deltaTime / 100;
+    // Set fan speed
+    fanSpeed = 15 * sensorValue;
+    
     // Reset interaction timer
     noInteract = 15000;
   }
@@ -44,26 +42,20 @@ void loop() {
   // If the system is not being interacted with for 15 seconds
   else if (noInteract <= 0 && sensorValue <= 0)
   {
-    // Set a random rate of revolution
-    degreesToTurn = random(1, 8) * (int)deltaTime;
+    // Set random fan speed
+    fanSpeed = random(300, 500);
+    
     // Reset interaction timer to keep revolution rate consistent
     noInteract = 15000;
   }
 
-  // Turn motors certain number of degrees either determined by calculation or random
-  currentDegrees = currentDegrees + degreesToTurn;
-  if (currentDegrees > 180)
-  {
-    currentDegrees = currentDegrees - 180;
-    servo.write(180);
-    delay(10);
-  }
-  servo.write(currentDegrees);
+  // Set fan speed as either determined by calculation or random
+  analogWrite(fan, fanSpeed);
+  Serial.println(fanSpeed);
 
-  // Lower interaction timer
+  // Lower no interaction timer
   noInteract = noInteract - deltaTime;
-  Serial.println(currentDegrees);
-//  delay(500);
+  delay(100);
 }
 
 unsigned long DeltaTime()
