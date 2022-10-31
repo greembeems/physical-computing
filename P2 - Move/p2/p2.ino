@@ -1,6 +1,6 @@
 // Holly Allen & Spencer Betze
 // Project 2: Move
-// 10/27/2022
+// 11/1/2022
 
 // Fan
 int fan = 3;
@@ -30,27 +30,31 @@ void loop() {
   sensorValue = analogRead(A0);
   
   // If the sensor is displaying a value
-  if (sensorValue > 0)
+  if (sensorValue >= 255)
   {
     // Set fan speed
-    fanSpeed = 15 * sensorValue;
+    fanSpeed = sensorValue;
     
     // Reset interaction timer
     noInteract = 15000;
   }
   
   // If the system is not being interacted with for 15 seconds
-  else if (noInteract <= 0 && sensorValue <= 0)
+  else if (noInteract <= 0 && sensorValue < 255)
   {
     // Set random fan speed
-    fanSpeed = random(300, 500);
+    fanSpeed = random(255, 500);
     
     // Reset interaction timer to keep revolution rate consistent
     noInteract = 15000;
   }
-
-  // Set fan speed as either determined by calculation or random
-  analogWrite(fan, fanSpeed);
+  else if (sensorValue < 255)
+  {
+    fanSpeed = 0;
+  }
+    // Set fan speed as either determined by calculation or random
+    analogWrite(fan, fanSpeed);
+    
   Serial.println(fanSpeed);
 
   // Lower no interaction timer
