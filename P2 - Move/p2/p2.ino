@@ -14,6 +14,7 @@ unsigned long noInteract = 15000;
 
 // Delta time
 unsigned long pastTime = 0;
+float scaleFactor;
 
 void setup() {
   pinMode(fan, OUTPUT);
@@ -21,6 +22,9 @@ void setup() {
 
   // Random
   randomSeed(analogRead(0));
+
+  scaleFactor = 255/ 1023;
+  
   delay(1000);
 }
 
@@ -35,7 +39,7 @@ void loop() {
   if (sensorValue <= 255 && sensorValue >= 50)
   {
     // Set fan speed
-    fanSpeed = sensorValue;
+    fanSpeed = sensorValue * scaleFactor;
     
     // Reset interaction timer
     noInteract = 15000;
@@ -48,7 +52,7 @@ void loop() {
   else if (noInteract <= 0 && sensorValue < 50)
   {
     // Set random fan speed
-    fanSpeed = random(255, 500);
+    fanSpeed = random(10, 256);
     
     // Reset interaction timer to keep revolution rate consistent
     noInteract = 15000;
