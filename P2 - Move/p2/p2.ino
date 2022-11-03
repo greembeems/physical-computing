@@ -19,11 +19,10 @@ float scaleFactor;
 void setup() {
   pinMode(fan, OUTPUT);
   digitalWrite(fan, LOW);
+  scaleFactor = 255/1023;
 
   // Random
   randomSeed(analogRead(0));
-
-  scaleFactor = 255/ 1023;
   
   delay(1000);
 }
@@ -36,7 +35,7 @@ void loop() {
   sensorValue = analogRead(A0);
   
   // If the sensor is displaying a value
-  if (sensorValue <= 255 && sensorValue >= 50)
+  if (sensorValue >= 30)
   {
     // Set fan speed
     fanSpeed = sensorValue * scaleFactor;
@@ -45,7 +44,8 @@ void loop() {
     noInteract = 15000;
 
     // Set fan speed as either determined by calculation or random
-   analogWrite(fan, fanSpeed);
+   analogWrite(fan, HIGH);
+   Serial.println(sensorValue);
   }
   
   // If the system is not being interacted with for 15 seconds
@@ -58,11 +58,10 @@ void loop() {
     noInteract = 15000;
     
     // Set fan speed as either determined by calculation or random
-    analogWrite(fan, fanSpeed);
+    //analogWrite(fan, fanSpeed);
   }
 
-    
-  Serial.println(fanSpeed);
+  //analogWrite(fan, fanSpeed);
 
   // Lower no interaction timer
   noInteract = noInteract - deltaTime;
