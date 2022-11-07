@@ -44,12 +44,12 @@ void loop() {
     noInteract = 15000;
 
     // Set fan speed as either determined by calculation or random
-   analogWrite(fan, HIGH);
+   //analogWrite(fan, fanSpeed);
    Serial.println(sensorValue);
   }
   
   // If the system is not being interacted with for 15 seconds
-  else if (noInteract <= 0 && sensorValue < 50)
+  else if (noInteract <= 0 && sensorValue < 30)
   {
     // Set random fan speed
     fanSpeed = random(10, 256);
@@ -61,7 +61,12 @@ void loop() {
     //analogWrite(fan, fanSpeed);
   }
 
-  //analogWrite(fan, fanSpeed);
+  else if(sensorValue < 30)
+  {
+    analogWrite(fan, LOW);
+  }
+
+  analogWrite(fan, fanSpeed);
 
   // Lower no interaction timer
   noInteract = noInteract - deltaTime;
