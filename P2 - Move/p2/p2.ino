@@ -34,7 +34,7 @@ void loop() {
   // Read input value
   sensorValue = analogRead(A0);
   
-  // If the sensor is displaying a value
+  // If the sensor is displaying a value equal to or above 30
   if (sensorValue >= 30)
   {
     // Set fan speed
@@ -44,12 +44,11 @@ void loop() {
     noInteract = 15000;
 
     // Set fan speed as either determined by calculation or random
-   //analogWrite(fan, fanSpeed);
-   Serial.println(sensorValue);
+   digitalWrite(fan, HIGH);
   }
   
   // If the system is not being interacted with for 15 seconds
-  else if (noInteract <= 0 && sensorValue < 30)
+  /*else if (noInteract <= 0 && sensorValue < 30)
   {
     // Set random fan speed
     fanSpeed = random(10, 256);
@@ -58,15 +57,15 @@ void loop() {
     noInteract = 15000;
     
     // Set fan speed as either determined by calculation or random
-    //analogWrite(fan, fanSpeed);
-  }
+    analogWrite(fan, fanSpeed);
+  }*/
 
   else if(sensorValue < 30)
   {
-    analogWrite(fan, LOW);
+    //fanSpeed = 0;
+    digitalWrite(fan, LOW);
   }
-
-  analogWrite(fan, fanSpeed);
+  Serial.println(sensorValue);
 
   // Lower no interaction timer
   noInteract = noInteract - deltaTime;
