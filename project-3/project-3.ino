@@ -8,12 +8,13 @@
 // Input values
 char inputValue;
 
-// Motor degrees
+// Motor
 int turnDegrees = 0;
 int currentDegrees = 0;
 long speed = 0.2;
 int maxDegrees = 90;
 int minDegrees = 0; 
+Servo servo;
 
 // Speaker
 unsigned int speakerPin = 0;
@@ -24,7 +25,7 @@ unsigned long pastTime = 0;
 
 void setup() {
   // Attach the two motors
-  //servo.attach(2, 530, 2600);
+  servo.attach(2, 530, 2600);
 
   Serial.begin(9600);
 }
@@ -41,7 +42,7 @@ void loop() {
     }
 
     currentDegrees = currentDegrees + speed * deltaTime;
-    //servo.write(currentDegrees);
+    servo.write(currentDegrees);
     PlayNote(inputValue);
   }
   else
@@ -66,6 +67,7 @@ unsigned long DeltaTime()
 // I could think of a smarter way to do this
 void PlayNote(char key)
 {
+  Serial.print(key);
   // Line 1
   if (key == 'q')
   {
