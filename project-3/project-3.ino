@@ -37,6 +37,7 @@ void loop() {
     
     if (PlayNote(inputValue))
     {
+      Serial.print("Played note");
       // Reverse speed if out of range
       if (currentDegrees >= maxDegrees || currentDegrees <= minDegrees)
       {
@@ -200,6 +201,7 @@ bool PlayNote(String key)
   }
   else 
   {
+    Serial.print("Did not play note\n");
     noTone(speakerPin);
     return false;
   }
