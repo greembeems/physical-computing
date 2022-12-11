@@ -6,7 +6,7 @@
 #include "pitches.h"
 
 // Input values
-char inputValue;
+String inputValue;
 
 // Motor
 int turnDegrees = 0;
@@ -31,24 +31,21 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available() > 0)
-  {
-    inputValue = Serial.read();
-    
-    // Reverse speed if out of range
-    if (currentDegrees >= maxDegrees || currentDegrees <= minDegrees)
-    {
-      speed = -speed;
-    }
+  while (Serial.available() == 0) {}
 
-    currentDegrees = currentDegrees + speed * deltaTime;
-    servo.write(currentDegrees);
-    PlayNote(inputValue);
-  }
-  else
-  {
-    noTone(speakerPin);
-  }
+    inputValue = Serial.readString();
+    
+    if (PlayNote(inputValue))
+    {
+      // Reverse speed if out of range
+      if (currentDegrees >= maxDegrees || currentDegrees <= minDegrees)
+      {
+        speed = -speed;
+      }
+  
+      currentDegrees = currentDegrees + speed * deltaTime;
+      servo.write(currentDegrees);
+    }
 
   delay(3);
 }
@@ -65,114 +62,146 @@ unsigned long DeltaTime()
 
 // Play associated note for all 26 letters
 // I could think of a smarter way to do this
-void PlayNote(char key)
+bool PlayNote(String key)
 {
   Serial.print(key);
   // Line 1
-  if (key == 'q')
+  if (key == "q")
   {
     tone(speakerPin, NOTE_B0);
+    return true;
   }
-  else if (key == 'w')
+  else if (key == "w")
   {
     tone(speakerPin, NOTE_C1);
+    return true;
   }
-  else if (key == 'e')
+  else if (key == "e")
   {
     tone(speakerPin, NOTE_D1);
+    return true;
   }
-  else if (key == 'r')
+  else if (key == "r")
   {
     tone(speakerPin, NOTE_E1);
+    return true;
   }
-  else if (key == 't')
+  else if (key == "t")
   {
     tone(speakerPin, NOTE_F1);
+    return true;
   }
-  else if (key == 'y')
+  else if (key == "y")
   {
     tone(speakerPin, NOTE_G1);
+    return true;
   }
-  else if (key == 'u')
+  else if (key == "u")
   {
     tone(speakerPin, NOTE_A1);
+    return true;
   }
-  else if (key == 'i')
+  else if (key == "i")
   {
     tone(speakerPin, NOTE_B1);
+    return true;
   }
-  else if (key == 'o')
+  else if (key == "o")
   {
     tone(speakerPin, NOTE_C2);
+    return true;
   }
-  else if (key == 'p')
+  else if (key == "p")
   {
     tone(speakerPin, NOTE_D2);
+    return true;
   }
   // Line 2
-  else if (key == 'a')
+  else if (key == "a")
   {
     tone(speakerPin, NOTE_E2);
+    return true;
   }
-  else if (key == 's')
+  else if (key == "s")
   {
     tone(speakerPin, NOTE_F2);
+    return true;
   }
-  else if (key == 'd')
+  else if (key == "d")
   {
     tone(speakerPin, NOTE_G2);
+    return true;
   }
-  else if (key == 'f')
+  else if (key == "f")
   {
     tone(speakerPin, NOTE_A2);
+    return true;
   }
-  else if (key == 'g')
+  else if (key == "g")
   {
     tone(speakerPin, NOTE_B2);
+    return true;
   }
-  else if (key == 'h')
+  else if (key == "h")
   {
     tone(speakerPin, NOTE_C3);
+    return true;
   }
-  else if (key == 'j')
+  else if (key == "j")
   {
     tone(speakerPin, NOTE_D3);
+    return true;
   }
-  else if (key == 'k')
+  else if (key == "k")
   {
     tone(speakerPin, NOTE_E3);
+    return true;
   }
-  else if (key == 'l')
+  else if (key == "l")
   {
     tone(speakerPin, NOTE_F3);
+    return true;
   }
   // Line 3
-  else if (key == 'z')
+  else if (key == "z")
   {
     tone(speakerPin, NOTE_G3);
+    return true;
   }
-  else if (key == 'x')
+  else if (key == "x")
   {
     tone(speakerPin, NOTE_A3);
+    return true;
   }
-  else if (key == 'c')
+  else if (key == "c")
   {
     tone(speakerPin, NOTE_B3);
+    return true;
   }
-  else if (key == 'v')
+  else if (key == "v")
   {
     tone(speakerPin, NOTE_C4);
+    return true;
   }
-  else if (key == 'b')
+  else if (key == "b")
   {
     tone(speakerPin, NOTE_D4);
+    return true;
   }
-  else if (key == 'n')
+  else if (key == "n")
   {
     tone(speakerPin, NOTE_F4);
+    return true;
   }
-  else if (key == 'm')
+  else if (key == "m")
   {
     tone(speakerPin, NOTE_G4);
+    return true;
   }
+  else 
+  {
+    noTone(speakerPin);
+    return false;
+  }
+  return false;
 }
