@@ -15,6 +15,7 @@ long speed = 0.2;
 int maxDegrees = 90;
 int minDegrees = 0; 
 Servo servo;
+bool notePlaying = false;
 
 // Speaker
 unsigned int speakerPin = 9;
@@ -31,11 +32,16 @@ void setup() {
 }
 
 void loop() {
+  deltaTime = DeltaTime();
+  
   while (Serial.available() == 0) {}
 
     inputValue = Serial.readString();
-    
-    if (PlayNote(inputValue))
+
+    notePlaying = PlayNote(inputValue);
+
+    // If there is a note playing right now
+    if (notePlaying)
     {
       // Reverse speed if out of range
       if (currentDegrees >= maxDegrees || currentDegrees <= minDegrees)
@@ -43,10 +49,8 @@ void loop() {
         speed = -speed;
       }
   
-      currentDegrees = currentDegrees + speed * deltaTime;
-      Serial.print("Current Degrees ");
-      Serial.print(currentDegrees + "\n");
-      servo.write(10);
+      currentDegrees = currentDegrees + speed * deltaTime; // Something is going wrong here and we need to solve what that is
+      servo.write(currentDegrees);
     }
 
   delay(0.02);
