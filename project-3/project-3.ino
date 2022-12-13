@@ -30,6 +30,7 @@ void setup() {
 
   Serial.begin(9600);
   servo.write(0);
+  Serial.print("started");
 }
 
 void loop() {

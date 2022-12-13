@@ -1,6 +1,6 @@
 var fft;
 let serial;
-let data = "waiting for input";
+let data = "waiting for data input";
 let equalizer = [];
 
 function setup() {
@@ -13,21 +13,22 @@ function setup() {
   }
   serial = new p5.SerialPort();
   serial.list();
-  serial.open("/dev/tty.usbmodem1411"); //connects to the serial port, if it can't connect, recode this to match the port name
+  serial.open('COM3'); //connects to the serial port, if it can't connect, recode this to match the port name
   //serial.open("/COM3")  Unsure if something like this works better
   //calls the functions based on the info recieved from the serial port
-  serial.on("connected", serverConnected);
-  serial.on("list", gotList);
-  serial.on("data", gotData);
-  serial.on("error", gotError);
-  serial.on("open", gotOpen);
-  serial.on("close", gotClose);
+  serial.on('connected', serverConnected);
+  serial.on('list', gotList);
+  serial.on('error', gotError);
+  serial.on('open', gotOpen);
+  serial.on('close', gotClose);
+  serial.on('data', gotData);
   console.log(data);
 }
 
 function draw() {
+  //console.log("Top of draw");
   background(0);
-  //var spectrum = fft.analyze();
+  var spectrum = fft.analyze();
   noStroke();
   var w = width / 64;
 
@@ -40,28 +41,29 @@ function draw() {
     rect(i * w, y, w, height - y);
   }*/
 
-  for (let i = 0; i < equalizer.length; i++) {
+  /*for (let i = 0; i < equalizer.length; i++) {
     fill(i, 255, 255);
     let x = (4 * i) + 10;
     stroke(53, 100);
     line(x, -equalizer[i][0], x, 0);
     stroke(153,100, 0, 100);
     line(x, -equalizer[i][1], x, 0);
-  }
+  }*/
 
   //try the other two first, and try this one if none of them work
-  /*for (var i = 0; i < spectrum.length; i++) {
+  for (var i = 0; i < spectrum.length; i++) {
     var amp = spectrum[i];
     var y = map(amp, 0, 256, height, 0);
     fill(i, 255, 255);
     rect(i * w, y, w, height - y);
-  }*/
+  }
 
   stroke(255);
   noFill();
 }
 
 function gotData(){
+  console.log("top of GotData");
 let current = serial.readLine();
 trim(current);
 if(!current) return;
@@ -75,6 +77,7 @@ if (coords.length == 3) {
 }
 
 console.log(data);
+console.log("Reached the end of GotData");
 }
 
 function serverConnected(){
