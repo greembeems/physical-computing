@@ -10,9 +10,9 @@ String inputValue;
 
 // Motor
 int turnDegrees = 0;
-int currentDegrees = 0;
-long speed = 0.2;
-int maxDegrees = 90;
+double currentDegrees = 0;
+double speed = 0.008;
+int maxDegrees = 45;
 int minDegrees = 0; 
 Servo servo;
 bool notePlaying = false;
@@ -25,10 +25,11 @@ unsigned long deltaTime = 0;
 unsigned long pastTime = 0;
 
 void setup() {
-  // Attach the two motors
+  // Attach the motor
   servo.attach(3, 530, 2600);
 
   Serial.begin(9600);
+  servo.write(0);
 }
 
 void loop() {
@@ -44,14 +45,21 @@ void loop() {
     if (notePlaying)
     {
       // Reverse speed if out of range
-      if (currentDegrees >= maxDegrees || currentDegrees <= minDegrees)
+      if (currentDegrees >= maxDegrees)
       {
         speed = -speed;
+        currentDegrees = maxDegrees;
+      }
+      else if (currentDegrees <= minDegrees)
+      {
+        speed = -speed;
+        currentDegrees = minDegrees;
       }
   
       currentDegrees = currentDegrees + speed * deltaTime; // Something is going wrong here and we need to solve what that is
       servo.write(currentDegrees);
     }
+
 
   delay(0.02);
 }
